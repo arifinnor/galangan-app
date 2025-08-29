@@ -3,20 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
-use Filament\Schemas\Schema;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\Textarea;
-use Filament\Schemas\Components\CheckboxList;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use BackedEnum;
 
 class RoleResource extends Resource
 {
@@ -39,32 +38,7 @@ class RoleResource extends Resource
                     ->relationship('permissions', 'name')
                     ->columns(3)
                     ->searchable()
-                    ->bulkToggleable()
-                    ->groupedBy('group', function (Permission $permission): string {
-                        $name = $permission->name;
-                        if (str_contains($name, 'users')) {
-                            return 'User Management';
-                        }
-                        if (str_contains($name, 'roles')) {
-                            return 'Role Management';
-                        }
-                        if (str_contains($name, 'permissions')) {
-                            return 'Permission Management';
-                        }
-                        if (str_contains($name, 'transactions')) {
-                            return 'Transaction Management';
-                        }
-                        if (str_contains($name, 'reports')) {
-                            return 'Reports';
-                        }
-                        if (str_contains($name, 'inventory')) {
-                            return 'Inventory Management';
-                        }
-                        if (str_contains($name, 'system') || str_contains($name, 'settings') || str_contains($name, 'backup')) {
-                            return 'System Management';
-                        }
-                        return 'Other';
-                    }),
+                    ->bulkToggleable(),
             ]);
     }
 

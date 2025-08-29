@@ -3,20 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionResource\Pages;
-use Filament\Schemas\Schema;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
-use Spatie\Permission\Models\Permission;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\TextInput;
-use Filament\Schemas\Components\Textarea;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use BackedEnum;
+use Filament\Tables\Table;
+use Spatie\Permission\Models\Permission;
 
 class PermissionResource extends Resource
 {
@@ -76,10 +76,12 @@ class PermissionResource extends Resource
                         'Other' => 'Other',
                     ])
                     ->query(function ($query, array $data) {
-                        if (!empty($data['values'])) {
+                        if (! empty($data['values'])) {
                             $group = $data['values'][0];
-                            return $query->where('name', 'like', '%' . strtolower(str_replace(' ', '', $group)) . '%');
+
+                            return $query->where('name', 'like', '%'.strtolower(str_replace(' ', '', $group)).'%');
                         }
+
                         return $query;
                     }),
             ])
